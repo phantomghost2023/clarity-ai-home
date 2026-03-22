@@ -19,7 +19,24 @@
   --r:3px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bot: env(safe-area-inset-bottom, 0px);
+  /* ── Text glow tiers ── */
+  --glow-strong: 0 0 8px rgba(29,158,117,.55), 0 0 2px rgba(6,12,18,.9);
+  --glow-mid:    0 0 6px rgba(29,158,117,.35), 0 0 2px rgba(6,12,18,.85);
+  --glow-soft:   0 0 5px rgba(29,158,117,.22), 0 0 1px rgba(6,12,18,.8);
+  --glow-dim:    0 0 4px rgba(29,158,117,.15), 0 0 1px rgba(6,12,18,.75);
+  --glow-gold:   0 0 7px rgba(212,160,23,.45), 0 0 2px rgba(6,12,18,.85);
 }
+/* ── GLOBAL TEXT GLOW ── */
+/* Primary content */
+body,.hero-h1,.diag-head-title,.book-h,.logo-name,.ch-n,.prod-n,.met-v,.hstat-v,.hero-stats,.hero-p strong,.dq-txt strong,.result-txt strong,.fc-body strong{text-shadow:var(--glow-soft);}
+/* Secondary / muted — these sit on dark bg and need lift */
+.hero-p,.dq-txt,.book-p,.diag-intro,.result-txt,.fc-body,.ch-s,.prod-m,.met-l,.hstat-l,.live-txt,.slot-t,.slot-n,.hero-h1 .sub,.fc-time,.book-note{text-shadow:var(--glow-mid);}
+/* Teal brand accents */
+.eyebrow,.sec-lbl,.card-title,.book-ey,.ci-pose-label,.dq-num,.met-v.t,.hstat-v.g,.logo-name em,.score-pill.good,.join-btn{text-shadow:var(--glow-strong);}
+/* Gold accents */
+.met-v.gold,.hstat-v.gold,.book-pv,.score-pill.mid{text-shadow:var(--glow-gold);}
+/* Chip / toggle labels */
+.ec,.tog,.fc-slot,.slot-b,.slot-n,.badge{text-shadow:var(--glow-dim);}
 html,body{background:var(--bg);color:var(--tx);font-family:'DM Mono',monospace;width:100%;min-height:100vh;}
 body::before{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.3;
