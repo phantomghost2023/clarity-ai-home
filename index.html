@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#060C12">
+<title>Clarity AI — Ci's Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- Telegram Mini App SDK -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --t:#1D9E75;--tb:#2DD4A0;--td:#0F6B52;--tk:#0A3D2A;
+  --bg:#060C12;--bg2:#0D1520;--bg3:#0a1812;--bg4:#07100D;
+  --tx:#E8F5F0;--tx2:#7a9a8a;--tx3:#2e4a3a;--tx4:#1a2e24;
+  --bd:#152820;--bd2:#1e3a2a;
+  --gold:#D4A017;--goldd:#8A6A08;
+  --r:3px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+html,body{background:var(--bg);color:var(--tx);font-family:'DM Mono',monospace;width:100%;min-height:100vh;}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.3;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 24px;padding-top:var(--safe-top);}
+
+/* ── HEADER ── */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:18px 0 16px;border-bottom:1px solid var(--bd);}
+.logo{display:flex;align-items:center;gap:10px;}
+.logomark{width:30px;height:30px;background:var(--bg3);border:1px solid var(--bd2);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:900;font-size:14px;color:var(--tb);}
+.logo-name{font-family:'Syne',sans-serif;font-weight:900;font-size:16px;letter-spacing:-.5px;}
+.logo-name em{color:var(--t);font-style:normal;}
+.hdr-right{display:flex;align-items:center;gap:12px;}
+.live-pill{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--bd2);border-radius:20px;padding:5px 10px 5px 8px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--t);flex-shrink:0;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(29,158,117,.5);}70%{box-shadow:0 0 0 5px rgba(29,158,117,0);}}
+.live-txt{font-size:9px;letter-spacing:.2em;color:var(--tx2);}
+.join-btn{background:var(--t);color:var(--bg);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;font-weight:500;padding:8px 16px;border:none;cursor:pointer;border-radius:var(--r);transition:background .15s,transform .1s;text-decoration:none;display:inline-block;}
+.join-btn:hover{background:var(--tb);transform:translateY(-1px);}
+
+/* ── HERO ── */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start;padding:32px 0 26px;border-bottom:1px solid var(--bd);}
+.ci-wrap{position:relative;flex-shrink:0;background:radial-gradient(ellipse at 50% 45%,#0e2a1e 0%,var(--bg4) 70%);border:1px solid var(--bd2);border-radius:8px;padding:12px;}
+.ci-wrap canvas{display:block;image-rendering:pixelated;image-rendering:crisp-edges;}
+.ci-ring{position:absolute;inset:0;border-radius:8px;pointer-events:none;box-shadow:inset 0 0 30px rgba(29,158,117,.07),0 0 40px rgba(29,158,117,.05);}
+.ci-pose-label{text-align:center;font-size:8px;letter-spacing:.25em;color:var(--t);margin-top:8px;}
+.expr-strip{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;justify-content:center;max-width:184px;}
+.ec{display:flex;align-items:center;gap:4px;background:var(--bg3);border:1px solid var(--bd);font-size:8px;letter-spacing:.15em;padding:4px 8px;color:var(--tx3);cursor:pointer;border-radius:var(--r);transition:all .15s;user-select:none;}
+.ec:hover{color:var(--tx2);}
+.ec.on{border-color:var(--t);color:var(--t);background:#0a1f15;}
+.ec-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+
+.hero-body{padding-top:4px;}
+.eyebrow{font-size:9px;letter-spacing:.3em;color:var(--t);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';display:inline-block;width:18px;height:1px;background:var(--t);}
+.hero-h1{font-family:'Syne',sans-serif;font-weight:900;font-size:42px;letter-spacing:-2px;line-height:.95;margin-bottom:14px;}
+.hero-h1 em{color:var(--t);font-style:normal;}
+.hero-h1 .sub{font-size:17px;font-weight:400;color:var(--tx2);letter-spacing:-.3px;display:block;margin-top:8px;}
+.hero-p{font-size:12px;line-height:1.85;color:var(--tx2);max-width:460px;margin-bottom:22px;}
+.hero-p strong{color:var(--tx);font-weight:400;}
+.hero-stats{display:flex;gap:18px;}
+.hstat{border-left:2px solid var(--bd2);padding-left:12px;}
+.hstat-v{font-family:'Syne',sans-serif;font-weight:900;font-size:20px;line-height:1;}
+.hstat-v.g{color:var(--t);}
+.hstat-v.gold{color:var(--gold);}
+.hstat-l{font-size:8px;letter-spacing:.18em;color:var(--tx3);margin-top:3px;}
+
+/* ── BODY ── */
+.body{display:grid;grid-template-columns:1fr 296px;gap:24px;padding:26px 0 40px;align-items:start;}
+.left{display:flex;flex-direction:column;gap:22px;}
+.sec-lbl{font-size:8px;letter-spacing:.35em;color:var(--t);display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--bd);}
+
+/* Diagnostic */
+.diag{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;}
+.diag-head{padding:13px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;}
+.diag-head-title{font-family:'Syne',sans-serif;font-weight:800;font-size:13px;}
+.score-pill{background:var(--bg3);border:1px solid var(--bd);border-radius:20px;padding:4px 12px;font-size:9px;letter-spacing:.15em;color:var(--tx2);transition:all .3s;}
+.score-pill.good{border-color:var(--t);color:var(--t);background:#071810;}
+.score-pill.mid{border-color:var(--gold);color:var(--gold);background:#0f0c04;}
+.score-pill.low{border-color:#6a3a3a;color:#c07070;background:#100a0a;}
+.diag-intro{padding:13px 16px 0;font-size:11px;color:var(--tx2);line-height:1.7;}
+.dq{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border-bottom:1px solid var(--bd);cursor:default;}
+.dq:last-of-type{border-bottom:none;}
+.dq-num{font-size:8px;letter-spacing:.1em;color:var(--t);flex-shrink:0;padding-top:3px;width:16px;}
+.dq-txt{flex:1;font-size:11px;line-height:1.7;color:var(--tx2);}
+.dq-txt strong{color:var(--tx);font-weight:400;}
+.dq-toggle{display:flex;gap:5px;flex-shrink:0;padding-top:2px;}
+.tog{width:30px;height:20px;border-radius:2px;border:1px solid var(--bd2);font-size:7px;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--tx3);transition:all .15s;background:var(--bg3);user-select:none;}
+.tog:hover{color:var(--tx2);}
+.tog.yes.on{background:#071810;border-color:var(--t);color:var(--t);}
+.tog.no.on{background:#100808;border-color:#6a3a3a;color:#c07070;}
+.diag-result{padding:13px 16px;border-top:1px solid var(--bd);background:var(--bg3);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.result-txt{font-size:11px;color:var(--tx2);line-height:1.6;flex:1;}
+.result-txt strong{color:var(--tx);font-weight:400;}
+.result-cta{background:var(--t);color:var(--bg);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.2em;padding:8px 14px;border:none;cursor:pointer;border-radius:var(--r);white-space:nowrap;transition:background .15s;flex-shrink:0;}
+.result-cta:hover{background:var(--tb);}
+
+/* Feed */
+.feed{display:flex;flex-direction:column;gap:8px;}
+.fc{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:13px 15px;}
+.fc-meta{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.fc-slot{font-size:7px;letter-spacing:.18em;padding:2px 7px;border-radius:2px;border:1px solid var(--bd2);color:var(--t);}
+.fc-slot.posted{border-color:var(--t);background:#061510;}
+.fc-slot.next{border-color:var(--gold);color:var(--gold);background:#0f0c04;}
+.fc-slot.due{border-color:var(--bd);color:var(--tx3);}
+.fc-time{font-size:8px;color:var(--tx3);}
+.fc-body{font-size:11px;line-height:1.7;color:var(--tx2);}
+.fc-body strong{color:var(--tx);font-weight:400;}
+
+/* ── RIGHT ── */
+.right{display:flex;flex-direction:column;gap:14px;}
+.card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:15px;}
+.card-title{font-size:8px;letter-spacing:.28em;color:var(--t);margin-bottom:13px;}
+
+/* Book CTA */
+.book{background:linear-gradient(135deg,#0a1f15 0%,#071510 100%);border:1px solid var(--td);border-radius:var(--r);padding:16px;}
+.book-ey{font-size:8px;letter-spacing:.28em;color:var(--t);margin-bottom:7px;}
+.book-h{font-family:'Syne',sans-serif;font-weight:900;font-size:16px;letter-spacing:-.4px;margin-bottom:6px;}
+.book-p{font-size:10px;line-height:1.7;color:var(--tx2);margin-bottom:12px;}
+.book-price{display:flex;align-items:baseline;gap:6px;margin-bottom:13px;}
+.book-pv{font-family:'Syne',sans-serif;font-size:26px;font-weight:900;color:var(--gold);}
+.book-pl{font-size:9px;color:var(--tx3);}
+.book-btn{width:100%;background:var(--t);color:var(--bg);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.2em;font-weight:500;padding:10px;border:none;cursor:pointer;border-radius:var(--r);transition:background .15s;}
+.book-btn:hover{background:var(--tb);}
+.book-note{font-size:8px;color:var(--tx3);margin-top:7px;text-align:center;}
+
+/* Channel */
+.ch{display:flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:11px;cursor:pointer;transition:border-color .15s;text-decoration:none;}
+.ch:hover{border-color:var(--td);}
+.ch-ico{width:32px;height:32px;border-radius:50%;background:var(--bg3);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ch-ico svg{width:13px;height:13px;}
+.ch-n{font-size:11px;color:var(--tx);margin-bottom:2px;}
+.ch-s{font-size:8px;color:var(--tx3);}
+
+/* Metrics */
+.mets{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.met{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:10px 11px;}
+.met-v{font-family:'Syne',sans-serif;font-size:19px;font-weight:900;line-height:1;}
+.met-v.t{color:var(--t);}
+.met-v.gold{color:var(--gold);}
+.met-v.dim{color:var(--tx2);}
+.met-l{font-size:7px;letter-spacing:.18em;color:var(--tx3);margin-top:3px;}
+
+/* Slots */
+.slots{display:flex;flex-direction:column;gap:5px;}
+.slot-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);}
+.slot-n{font-size:8px;color:var(--tx3);width:38px;flex-shrink:0;}
+.slot-t{font-size:8px;color:var(--tx3);flex:1;}
+.slot-b{font-size:7px;letter-spacing:.12em;padding:2px 7px;border-radius:2px;}
+.slot-b.done{background:#061510;color:var(--t);border:1px solid var(--td);}
+.slot-b.next{background:#0f0c04;color:var(--gold);border:1px solid var(--goldd);}
+.slot-b.due{background:var(--bg3);color:var(--tx3);border:1px solid var(--bd);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  .hero{grid-template-columns:1fr;}
+  .ci-wrap{width:fit-content;margin:0 auto;}
+  .expr-strip{max-width:100%;}
+  .hero-h1{font-size:30px;}
+  .body{grid-template-columns:1fr;}
+  .right{order:-1;}
+  .hdr-right .live-pill{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="logo">
+    <div class="logomark">C</div>
+    <div class="logo-name">Clarity<em> AI</em></div>
+  </div>
+  <div class="hdr-right">
+    <div class="live-pill">
+      <div class="live-dot"></div>
+      <span class="live-txt" id="liveLabel">LIVE</span>
+    </div>
+    <a class="join-btn" href="https://t.me/clarityai.ops" target="_blank">Join Channel ↗</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="ci-wrap">
+      <canvas id="ciCv" width="220" height="220" style="width:184px;height:184px;"></canvas>
+      <div class="ci-ring"></div>
+    </div>
+    <div class="ci-pose-label" id="poseLabel">CONFIDENT</div>
+    <div class="expr-strip">
+      <div class="ec on" data-p="confident"><span class="ec-dot" style="background:#1D9E75"></span>CONF</div>
+      <div class="ec" data-p="thinking"><span class="ec-dot" style="background:#2BBFA0"></span>THINK</div>
+      <div class="ec" data-p="excited"><span class="ec-dot" style="background:#D4A017"></span>EXCITE</div>
+      <div class="ec" data-p="serious"><span class="ec-dot" style="background:#6a9a8a"></span>SERIOUS</div>
+      <div class="ec" data-p="sideeye"><span class="ec-dot" style="background:#80FFDD"></span>SIDE</div>
+    </div>
+  </div>
+
+  <div class="hero-body">
+    <div class="eyebrow">AI Implementation Consultancy · Day <span id="dayCount">3</span> of Launch</div>
+    <h1 class="hero-h1">
+      You paid for AI.<br>
+      <em>Nothing changed.</em>
+      <span class="sub">Clarity AI fixes that.</span>
+    </h1>
+    <p class="hero-p">
+      <strong>88% of businesses have adopted AI. 1% are using it maturely.</strong>
+      The gap isn't the tools — it's the workflow redesign, change management,
+      and strategic clarity that makes tools produce outcomes.<br><br>
+      No fluff. No pilots. Just P&amp;L impact.
+    </p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-v g">95%</div><div class="hstat-l">PILOTS FAIL</div></div>
+      <div class="hstat"><div class="hstat-v">5 days</div><div class="hstat-l">DIAGNOSTIC</div></div>
+      <div class="hstat"><div class="hstat-v gold">$3.5K</div><div class="hstat-l">ENTRY PRICE</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BODY -->
+<div class="body">
+<div class="left">
+
+  <!-- Diagnostic -->
+  <div>
+    <div class="sec-lbl">5-Question Self-Diagnostic</div>
+    <div class="diag">
+      <div class="diag-head">
+        <span class="diag-head-title">AI Implementation Audit</span>
+        <span class="score-pill" id="scorePill">0 / 5 answered</span>
+      </div>
+      <p class="diag-intro">Answer honestly. 4–5 YES = you're in the top 5%. 0–1 YES = you have decoration, not implementation.</p>
+
+      <div class="dq"><span class="dq-num">01</span><div class="dq-txt">If the person who set up your AI workflows took a <strong>2-week vacation tomorrow</strong>, would those processes still run and deliver value without them?</div><div class="dq-toggle"><div class="tog yes" id="q0y">YES</div><div class="tog no" id="q0n">NO</div></div></div>
+      <div class="dq"><span class="dq-num">02</span><div class="dq-txt">Can you point to a <strong>specific, non-vague P&amp;L improvement</strong> directly attributable to AI — like a 40% drop in support tickets?</div><div class="dq-toggle"><div class="tog yes" id="q1y">YES</div><div class="tog no" id="q1n">NO</div></div></div>
+      <div class="dq"><span class="dq-num">03</span><div class="dq-txt">Do your frontline employees say AI has <strong>removed tasks</strong> from their plates — not added a new "monitoring" layer to their day?</div><div class="dq-toggle"><div class="tog yes" id="q2y">YES</div><div class="tog no" id="q2n">NO</div></div></div>
+      <div class="dq"><span class="dq-num">04</span><div class="dq-txt">Was your last AI purchase made to <strong>solve a documented bottleneck</strong> — not a reaction to competitor pressure or general FOMO?</div><div class="dq-toggle"><div class="tog yes" id="q3y">YES</div><div class="tog no" id="q3n">NO</div></div></div>
+      <div class="dq" style="border-bottom:none"><span class="dq-num">05</span><div class="dq-txt">Is there a <strong>mandatory human check</strong> for every piece of AI-generated content before it reaches a client or critical business system?</div><div class="dq-toggle"><div class="tog yes" id="q4y">YES</div><div class="tog no" id="q4n">NO</div></div></div>
+
+      <div class="diag-result">
+        <div class="result-txt" id="resultTxt">Answer the questions above to see your score.</div>
+        <button class="result-cta" onclick="window.open('https://t.me/clarityai.ops','_blank')">Book Diagnostic →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feed -->
+  <div>
+    <div class="sec-lbl">Today's Posts</div>
+    <div class="feed">
+      <div class="fc"><div class="fc-meta"><span class="fc-slot posted">SLOT 1 · 9AM</span><span class="fc-time">POSTED</span></div><div class="fc-body"><strong>Channel intro.</strong> Met Ci. The premise: 95% of pilots fail. Here's why, and how this channel fixes it.</div></div>
+      <div class="fc"><div class="fc-meta"><span class="fc-slot posted">SLOT 2 · 12PM</span><span class="fc-time">POSTED</span></div><div class="fc-body"><strong>Brand brief prompt.</strong> Upload your brand guide to Claude. Revision cycles drop 40%. The brief writes itself.</div></div>
+      <div class="fc"><div class="fc-meta"><span class="fc-slot next">SLOT 3 · 3PM</span><span class="fc-time">NEXT UP</span></div><div class="fc-body"><strong>Stat drop.</strong> AI adoption fell from 42% to 28% in a year. Not because tools got worse — because nobody measured anything.</div></div>
+      <div class="fc"><div class="fc-meta"><span class="fc-slot due">SLOT 4 · 6PM</span><span class="fc-time">SCHEDULED</span></div><div class="fc-body" style="color:var(--tx3)">Vocabulary / naming post. Queued.</div></div>
+      <div class="fc"><div class="fc-meta"><span class="fc-slot due">SLOT 5 · 8PM</span><span class="fc-time">SCHEDULED</span></div><div class="fc-body" style="color:var(--tx3)">Engagement question. Queued.</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SIDEBAR -->
+<div class="right">
+
+  <div class="book">
+    <div class="book-ey">Entry Product</div>
+    <div class="book-h">AI Diagnostic</div>
+    <p class="book-p">5-day deep audit of your AI usage. Where value is being lost. Exactly what to do about it. Prioritised roadmap you can act on immediately.</p>
+    <div class="book-price"><span class="book-pv">$3,500</span><span class="book-pl">· 5 days · upfront</span></div>
+    <button class="book-btn" onclick="window.open('https://t.me/clarityai.ops','_blank')">Book via Telegram →</button>
+    <div class="book-note">→ Sprint $12K · Retainer $5K/mo</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Channel</div>
+    <a class="ch" href="https://t.me/clarityai.ops" target="_blank">
+      <div class="ch-ico"><svg viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg></div>
+      <div><div class="ch-n">clarityai.ops</div><div class="ch-s">Telegram · Public</div></div>
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Business · Month 1</div>
+    <div class="mets">
+      <div class="met"><div class="met-v t">$0</div><div class="met-l">REVENUE MTD</div></div>
+      <div class="met"><div class="met-v dim">0</div><div class="met-l">CLIENTS</div></div>
+      <div class="met"><div class="met-v" id="postsMetric">6</div><div class="met-l">POSTS SENT</div></div>
+      <div class="met"><div class="met-v gold">$48.5K</div><div class="met-l">TARGET/MO</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Today's Schedule</div>
+    <div class="slots">
+      <div class="slot-row"><span class="slot-n">Slot 1</span><span class="slot-t">9:00 AM</span><span class="slot-b done">POSTED</span></div>
+      <div class="slot-row"><span class="slot-n">Slot 2</span><span class="slot-t">12:00 PM</span><span class="slot-b done">POSTED</span></div>
+      <div class="slot-row"><span class="slot-n">Slot 3</span><span class="slot-t">3:00 PM</span><span class="slot-b next">NEXT</span></div>
+      <div class="slot-row"><span class="slot-n">Slot 4</span><span class="slot-t">6:00 PM</span><span class="slot-b due">DUE</span></div>
+      <div class="slot-row"><span class="slot-n">Slot 5</span><span class="slot-t">8:00 PM</span><span class="slot-b due">DUE</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<script>
+// ── TELEGRAM MINI APP INIT ────────────────────────────────────────────────────
+const tg = window.Telegram?.WebApp;
+if (tg) {
+  tg.ready();
+  tg.expand();
+  // Greet user by first name if available
+  const name = tg.initDataUnsafe?.user?.first_name;
+  if (name) {
+    const eyebrow = document.querySelector('.eyebrow');
+    if (eyebrow) eyebrow.innerHTML = eyebrow.innerHTML.replace('AI Implementation Consultancy', `Hey ${name} · Clarity AI`);
+  }
+  // Match Telegram theme if dark
+  if (tg.colorScheme === 'light') {
+    document.documentElement.style.setProperty('--bg','#f4f4f0');
+    document.documentElement.style.setProperty('--bg2','#eaeae6');
+    document.documentElement.style.setProperty('--tx','#0D1520');
+    document.documentElement.style.setProperty('--tx2','#3a5a4a');
+  }
+}
+
+// ── SPRITE ENGINE ────────────────────────────────────────────────────────────
+const PAL=['transparent','#0D1520','#1D9E75','#0F6B52','#2DD4A0','#0A3D2A','#E8F5F0','#80FFDD','#06080D','#FFFFFF','#D4A017','#8A6A08','#C8E8DC','#1a3028'];
+const _=0,K=1,B1=2,B2=3,B3=4,B4=5,EW=6,EG=7,EP=8,EH=9,GD=10,GS=11,CW=12,TS=13;
+const BASE=[[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],[_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_],[_,_,_,B4,B2,B1,B1,B1,B1,B1,B1,B2,B4,_,_,_],[_,_,B4,B2,B1,B3,B1,B1,B1,B1,B3,B1,B2,B4,_,_],[_,_,B4,B2,B1,K,K,K,K,K,K,B1,B2,B4,_,_],[_,_,B4,B1,K,EW,EG,K,K,K,EW,EG,K,B1,B4,_],[_,_,B4,B1,K,EG,EG,EP,K,EP,EG,EG,K,B1,B4,_],[_,_,B4,B1,K,EW,EH,K,K,K,EW,EH,K,B1,B4,_],[_,_,B4,B1,K,K,K,GD,GD,K,K,K,B1,B4,_,_],[_,_,_,B4,B1,B1,B1,GS,GS,B1,B1,B1,B4,_,_,_],[_,K,B4,B2,B1,B1,B2,B2,B2,B2,B1,B1,B2,B4,K,_],[_,K,B2,B1,B1,B3,B1,CW,CW,B1,B3,B1,B1,B2,K,_],[_,K,B2,B1,B1,B1,K,B1,B1,K,B1,B1,B1,B2,K,_],[_,K,B4,B2,B1,B1,K,B1,B1,K,B1,B1,B2,B4,K,_],[_,_,K,B4,B4,B4,B4,B4,B4,B4,B4,B4,B4,K,_,_],[_,_,_,GD,GS,_,GD,GS,GD,GS,_,GD,GS,_,_,_]];
+const EN=[[_,_,_,_,B4,B2,_,_,_,_,B2,B4,_,_,_,_],[_,_,_,_,B2,B1,_,_,_,_,B1,B2,_,_,_,_]];
+const EU=[[_,_,_,B4,B2,B1,_,_,_,_,B1,B2,B4,_,_,_],[_,_,_,B4,B1,B3,_,_,_,_,B3,B1,B4,_,_,_]];
+const EY={normal:[[K,EW,EG,K,K,K,EW,EG,K],[K,EG,EG,EP,K,EP,EG,EG,K],[K,EW,EH,K,K,K,EW,EH,K]],half:[[K,K,K,K,K,K,K,K,K],[K,EW,EG,K,K,K,EW,EG,K],[K,K,K,K,K,K,K,K,K]],closed:[[K,K,K,K,K,K,K,K,K],[K,TS,TS,K,K,K,TS,TS,K],[K,K,K,K,K,K,K,K,K]],wide:[[K,EW,EW,EG,K,EG,EW,EW,K],[K,EG,EG,EP,K,EP,EG,EG,K],[K,EW,EH,EH,K,EH,EW,EH,K]],squint:[[K,TS,TS,K,K,K,TS,TS,K],[K,EW,EG,K,K,K,EW,EG,K],[K,K,K,K,K,K,K,K,K]],side:[[K,EW,EG,K,K,K,K,K,K],[K,EG,EG,EP,K,K,K,K,K],[K,EW,EH,K,K,K,K,K,K]]};
+const POSES={confident:{idle:[{},{dy:-1},{dy:-1},{},{dy:1},{dy:1},{},{}],blink:[{},{},{e:'half'},{e:'closed'},{e:'closed'},{e:'half'},{},{}]},thinking:{idle:[{e:'squint',t:-8},{e:'squint',t:-5},{e:'squint',t:-2},{e:'squint'},{e:'squint',t:2},{e:'squint',t:5},{e:'squint',t:8},{e:'squint',t:5}],blink:[{e:'squint'},{e:'half'},{e:'closed'},{e:'closed'},{e:'half'},{e:'squint'},{e:'squint'},{e:'squint'}]},excited:{idle:[{e:'wide',eu:true,sp:true},{e:'wide',eu:true,dy:-2,sp:true},{e:'wide',eu:true,dy:-2,sp:true},{e:'wide',eu:true,dy:-1,sp:true},{e:'wide',eu:true,sp:true},{e:'wide',eu:true,dy:1,sp:true},{e:'wide',eu:true,sp:true},{}],blink:[{e:'wide',eu:true,sp:true},{e:'half',eu:true,sp:true},{e:'closed',eu:true,sp:true},{e:'closed',eu:true,sp:true},{e:'half',eu:true,sp:true},{e:'wide',eu:true,sp:true},{},{}]},serious:{idle:[{e:'half'},{e:'half'},{e:'half'},{e:'half'},{e:'half'},{e:'half'},{e:'half'},{e:'half'}],blink:[{e:'half'},{e:'closed'},{e:'closed'},{e:'closed'},{e:'half'},{e:'half'},{},{}]},sideeye:{idle:[{e:'side'},{e:'side',dy:-1},{e:'side',dy:-1},{e:'side',t:2},{e:'side',t:2},{e:'side'},{},{}],blink:[{e:'side'},{e:'side'},{e:'closed'},{e:'closed'},{e:'side'},{e:'side'},{},{}]}};
+const TIM={idle:[400,400,400,400,400,400,400,400],blink:[400,200,120,120,200,200,400,400]};
+const cv=document.getElementById('ciCv');
+const ctx=cv.getContext('2d');
+const W=220,PX=11;
+let pose='confident',anim='idle',fi=0,atimer=null,btimer=null;
+function drawFrame(o={}){
+  const{e='normal',eu=false,dy=0,t=0,sp=false}=o;
+  const ears=eu?EU:EN,eyes=EY[e]||EY.normal;
+  const g=BASE.map(r=>[...r]);
+  for(let r=0;r<2;r++)for(let c=0;c<16;c++)if(ears[r][c])g[r][c]=ears[r][c];
+  for(let r=0;r<3;r++)for(let c=0;c<9;c++)g[5+r][4+c]=eyes[r][c];
+  const bg2=ctx.createRadialGradient(W/2,W/2,10,W/2,W/2,W*.7);
+  bg2.addColorStop(0,'#0e2a1e');bg2.addColorStop(1,'#060C12');
+  ctx.fillStyle=bg2;ctx.fillRect(0,0,W,W);
+  for(let y=0;y<W;y+=4){ctx.fillStyle='rgba(29,158,117,0.025)';ctx.fillRect(0,y,W,1);}
+  const ox=Math.round((W-16*PX)/2),oy=10,ay=oy+dy*PX,tp=Math.round(t*PX*.05);
+  ctx.save();
+  for(let r=0;r<16;r++)for(let c=0;c<16;c++){
+    const v=g[r][c];if(!v)continue;
+    ctx.fillStyle=PAL[v];const tx2=r<8?tp:-tp;
+    ctx.fillRect(ox+c*PX+tx2,ay+r*PX,PX,PX);
+    if(PX>=8&&v!==1){ctx.fillStyle='rgba(255,255,255,0.1)';ctx.fillRect(ox+c*PX+tx2,ay+r*PX,3,3);}
+  }
+  [[ox+5*PX+PX*.5,ay+6*PX],[ox+10*PX+PX*.5,ay+6*PX]].forEach(([ex,ey])=>{
+    const gr=ctx.createRadialGradient(ex,ey,0,ex,ey,PX*2.8);
+    gr.addColorStop(0,'rgba(45,212,160,.22)');gr.addColorStop(1,'transparent');
+    ctx.fillStyle=gr;ctx.fillRect(ex-PX*3,ey-PX*2.5,PX*6,PX*5);
+  });
+  ctx.fillStyle=PAL[CW];
+  [[6,12],[6,13],[9,12],[9,13],[7,12],[7,13]].forEach(([c,r])=>ctx.fillRect(ox+c*PX,ay+r*PX,PX,PX));
+  if(sp){ctx.fillStyle=PAL[GD];[[-1,3],[17,2],[-1,9],[17,8],[16,13],[-2,12]].forEach(([c,r])=>ctx.fillRect(ox+c*PX,ay+r*PX,PX,PX));}
+  ctx.restore();
+}
+function tick(){const frames=POSES[pose][anim];drawFrame(frames[fi]||{});const d=TIM[anim][fi]||400;fi=(fi+1)%frames.length;atimer=setTimeout(tick,d);}
+function blinkCycle(){const w=3500+Math.random()*4000;btimer=setTimeout(()=>{if(anim==='idle'){clearTimeout(atimer);anim='blink';fi=0;tick();const tot=TIM.blink.reduce((a,b)=>a+b,0);setTimeout(()=>{anim='idle';fi=0;tick();blinkCycle();},tot);}else blinkCycle();},w);}
+function setPose(p){pose=p;clearTimeout(atimer);clearTimeout(btimer);anim='idle';fi=0;tick();blinkCycle();const labels={confident:'CONFIDENT',thinking:'THINKING',excited:'EXCITED',serious:'SERIOUS',sideeye:'SIDE-EYE'};document.getElementById('poseLabel').textContent=labels[p]||p.toUpperCase();}
+document.querySelectorAll('.ec').forEach(c=>{c.addEventListener('click',()=>{document.querySelectorAll('.ec').forEach(x=>x.classList.remove('on'));c.classList.add('on');setPose(c.dataset.p);if(tg)tg.HapticFeedback?.impactOccurred('light');});});
+tick();blinkCycle();
+
+// ── DIAGNOSTIC ───────────────────────────────────────────────────────────────
+const answers=Array(5).fill(null);
+const RESULTS=[
+  {t:'0–1 YES — Decoration',d:'FOMO with a budget. AI exists on your balance sheet, not in your operations.',cls:'low'},
+  {t:'2–3 YES — Dependency',d:'You have an AI experiment, not a workflow. Fragile. High risk of silent failure.',cls:'mid'},
+  {t:'4–5 YES — Implementation',d:"You're in the top 5%. Your AI runs independently and delivers measurable value.",cls:'good'},
+];
+function setA(i,val){
+  answers[i]=val;
+  ['y','n'].forEach(s=>{const el=document.getElementById('q'+i+s);if(el)el.classList.remove('on');});
+  const el=document.getElementById('q'+i+(val?'y':'n'));if(el)el.classList.add('on');
+  if(tg)tg.HapticFeedback?.selectionChanged();
+  updateScore();
+}
+for(let i=0;i<5;i++){
+  ['y','n'].forEach(s=>{
+    const el=document.getElementById('q'+i+s);
+    if(el)el.addEventListener('click',()=>setA(i,s==='y'));
+  });
+}
+function updateScore(){
+  const answered=answers.filter(a=>a!==null).length;
+  const yes=answers.filter(a=>a===true).length;
+  const pill=document.getElementById('scorePill');
+  const txt=document.getElementById('resultTxt');
+  if(answered===0){pill.textContent='0 / 5 answered';pill.className='score-pill';txt.innerHTML='Answer the questions above to see your score.';return;}
+  pill.textContent=yes+' / '+answered+' YES';
+  if(answered<5){pill.className='score-pill';txt.innerHTML='Keep going — '+(5-answered)+' remaining.';return;}
+  const r=yes>=4?RESULTS[2]:yes>=2?RESULTS[1]:RESULTS[0];
+  pill.className='score-pill '+r.cls;
+  pill.textContent=yes+' / 5 YES';
+  txt.innerHTML='<strong>'+r.t+'</strong> — '+r.d;
+  if(tg)tg.HapticFeedback?.notificationOccurred(yes>=4?'success':yes>=2?'warning':'error');
+}
+
+// ── LIVE DATA ────────────────────────────────────────────────────────────────
+document.getElementById('postsMetric').textContent=6;
+const launch=new Date('2026-03-20');
+const now=new Date();
+const day=Math.max(1,Math.round((now-launch)/(1000*60*60*24))+1);
+document.getElementById('dayCount').textContent=day;
+document.getElementById('liveLabel').textContent='2 POSTS TODAY · DAY '+day;
+</script>
+</body>
+</html>
